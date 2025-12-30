@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Course {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  color       String   @default("blue")
+  iconChar    String   @default("A")
+  units       Unit[]
+  classes     SchoolClassCourse[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Unit {
+  id        String   @id @default(uuid())
+  title     String
+  courseId  String
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  tasks     Task[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model Task {
+  id        String   @id @default(uuid())
+  title     String
+  type      String   // video, quiz, pdf, etc.
+  content   String   // JSON string of the payload
+  settings  String   // JSON string of settings (points, required)
+  unitId    String
+  unit      Unit     @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model SchoolClass {
+  id          String        @id @default(uuid())
+  name        String
+  description String?
+  isArchived  Boolean       @default(false)
+  courses     SchoolClassCourse[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model SchoolClassCourse {
+  classId    String
+  courseId   String
+  class      SchoolClass    @relation(fields: [classId], references: [id], onDelete: Cascade)
+  course     Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  assignedAt DateTime @default(now())
+  status     String   @default("hidden") // hidden, prepping, teaching, taught
+  isSaved    Boolean  @default(false)
+
+  @@id([classId, courseId])
+}

@@ -1,0 +1,78 @@
+2025-12-28T18:07:26.871Z 
+Invalid `__TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].schoolClassCourse.upsert()` invocation in
+/Users/hernan/Documents/PulpoWeb/Proyectos/LenguajePlatform/.next/dev/server/chunks/[root-of-the-server]__56c28a5b._.js:95:174
+
+  92     });
+  93 }
+  94 // Check if already assigned, update if so, or create
+→ 95 const assignment = await __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].schoolClassCourse.upsert({
+       where: {
+         classId_courseId: {
+           classId: "a08b07a0-83c4-4e90-9e55-b9f87f6fc07e",
+           courseId: "6ceb6fab-4b7f-4dbd-8a71-2b5d4dea3b83"
+         }
+       },
+       update: {
+         status: "saved",
+         assignedAt: new Date("2025-12-28T18:07:26.631Z")
+       },
+       create: {
+         classId: "a08b07a0-83c4-4e90-9e55-b9f87f6fc07e",
+         courseId: "6ceb6fab-4b7f-4dbd-8a71-2b5d4dea3b83",
+         status: "saved",
+         ~~~~~~
+     ?   assignedAt?: DateTime
+       }
+     })
+
+Unknown argument `status`. Available options are marked with ?.
+2025-12-28T18:44:38.593Z 
+Invalid `__TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].schoolClassCourse.update()` invocation in
+/Users/hernan/Documents/PulpoWeb/Proyectos/LenguajePlatform/.next/dev/server/chunks/[root-of-the-server]__56c28a5b._.js:122:175
+
+  119     createData.isSaved = false; // Or default
+  120 }
+  121 if (existing) {
+→ 122     const updated = await __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].schoolClassCourse.update({
+            where: {
+              classId_courseId: {
+                classId: "a08b07a0-83c4-4e90-9e55-b9f87f6fc07e",
+                courseId: "6ceb6fab-4b7f-4dbd-8a71-2b5d4dea3b83"
+              }
+            },
+            data: {
+              assignedAt: new Date("2025-12-28T18:44:38.214Z"),
+              isSaved: true,
+              ~~~~~~~
+          ?   status?: String | StringFieldUpdateOperationsInput,
+          ?   class?: SchoolClassUpdateOneRequiredWithoutCoursesNestedInput,
+          ?   course?: CourseUpdateOneRequiredWithoutClassesNestedInput
+            }
+          })
+
+Unknown argument `isSaved`. Available options are marked with ?.
+2025-12-28T18:46:26.008Z 
+Invalid `__TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].schoolClassCourse.update()` invocation in
+/Users/hernan/Documents/PulpoWeb/Proyectos/LenguajePlatform/.next/dev/server/chunks/[root-of-the-server]__56c28a5b._.js:122:175
+
+  119     createData.isSaved = false; // Or default
+  120 }
+  121 if (existing) {
+→ 122     const updated = await __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].schoolClassCourse.update({
+            where: {
+              classId_courseId: {
+                classId: "a08b07a0-83c4-4e90-9e55-b9f87f6fc07e",
+                courseId: "6ceb6fab-4b7f-4dbd-8a71-2b5d4dea3b83"
+              }
+            },
+            data: {
+              assignedAt: new Date("2025-12-28T18:46:25.697Z"),
+              isSaved: true,
+              ~~~~~~~
+          ?   status?: String | StringFieldUpdateOperationsInput,
+          ?   class?: SchoolClassUpdateOneRequiredWithoutCoursesNestedInput,
+          ?   course?: CourseUpdateOneRequiredWithoutClassesNestedInput
+            }
+          })
+
+Unknown argument `isSaved`. Available options are marked with ?.

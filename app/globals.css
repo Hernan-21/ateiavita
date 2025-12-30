@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+:root {
+  /* New Theme: ANNA Style */
+  --background: #FFFFFF;
+  /* White Background */
+  --foreground: #1F2937;
+  /* Gray 900 */
+
+  /* Brand Colors */
+  --primary: #5865F2;
+  /* Periwinkle Blue - Buttons/Actions */
+  --primary-foreground: #FFFFFF;
+
+  --secondary: #FFD000;
+  /* Bright Yellow - Brand/Footer */
+  --secondary-foreground: #1F2937;
+
+  --accent: #10B981;
+  /* Green - Success/Status */
+  --accent-foreground: #FFFFFF;
+
+  --card: #FFFFFF;
+  --card-foreground: #1F2937;
+
+  --border: #E5E7EB;
+  /* Gray 200 */
+  --input: #E5E7EB;
+  --ring: #5865F2;
+}
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-border: var(--border);
+
+  --font-sans: var(--font-open-sans);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #F8FAFC;
+    /*#0F172A*/
+    /* Slate 900 */
+    --foreground: #F8FAFC;
+    /* Slate 50 */
+
+    --card: #1E293B;
+    /* Slate 800 */
+    --card-foreground: #F8FAFC;
+
+    --border: #334155;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), "Open Sans", BlinkMacSystemFont, -apple-system, Roboto, "Segoe UI", sans-serif;
+}
