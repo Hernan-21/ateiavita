@@ -84,14 +84,14 @@ export function UserProvider({ children, userId }: { children: React.ReactNode, 
         return state.completedMaterials.includes(materialId);
     }
 
-    const getClassProgress = (levelId: string, classId: string) => {
+    const getClassProgress = (levelId: string, unitId: string) => {
         const level = LEVELS.find(l => l.id === levelId);
         if (!level) return 0;
-        const cls = level.classes.find(c => c.id === classId);
-        if (!cls || cls.materials.length === 0) return 0;
+        const unit = level.units.find(u => u.id === unitId);
+        if (!unit || unit.tasks.length === 0) return 0;
 
-        const total = cls.materials.length;
-        const completed = cls.materials.filter(m => state.completedMaterials.includes(m.id)).length;
+        const total = unit.tasks.length;
+        const completed = unit.tasks.filter(t => state.completedMaterials.includes(t.id)).length;
 
         return Math.round((completed / total) * 100);
     }
@@ -103,9 +103,9 @@ export function UserProvider({ children, userId }: { children: React.ReactNode, 
         let totalMaterials = 0;
         let completedMaterials = 0;
 
-        level.classes.forEach(c => {
-            totalMaterials += c.materials.length;
-            completedMaterials += c.materials.filter(m => state.completedMaterials.includes(m.id)).length;
+        level.units.forEach(u => {
+            totalMaterials += u.tasks.length;
+            completedMaterials += u.tasks.filter(t => state.completedMaterials.includes(t.id)).length;
         });
 
         if (totalMaterials === 0) return 0;
