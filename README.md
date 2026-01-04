@@ -35,3 +35,11 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 # ateiavita
+
+## Tech Stack
+- **Framework**: Next.js 16 (App Router)
+- **Database**: PostgreSQL (Neon.tech)
+- **ORM**: Prisma
+- **Auth**: NextAuth.js v5
+- **Styling**: Tailwind CSS
+
