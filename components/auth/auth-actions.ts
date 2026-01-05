@@ -6,6 +6,10 @@ export async function loginAction() {
     await signIn("google", { redirectTo: "/" })
 }
 
+export async function loginYandexAction() {
+    await signIn("yandex", { redirectTo: "/" })
+}
+
 export async function credentialsLoginAction(formData: FormData) {
     try {
         await signIn("credentials", {

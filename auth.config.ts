@@ -1,10 +1,12 @@
 import type { NextAuthConfig } from "next-auth"
 import Google from "next-auth/providers/google"
+import Yandex from "next-auth/providers/yandex"
 import Credentials from "next-auth/providers/credentials"
 
 export const authConfig = {
     providers: [
         Google,
+        Yandex,
         Credentials({
             async authorize(credentials) {
                 return null; // Logic is in auth.ts

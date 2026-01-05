@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/Button"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Eye, EyeOff, ArrowRight } from "lucide-react"
-import { loginAction } from "@/components/auth/auth-actions"
+import { loginAction, loginYandexAction } from "@/components/auth/auth-actions"
 
 export default function RegisterPage() {
     const router = useRouter()
@@ -83,11 +83,15 @@ export default function RegisterPage() {
                             </button>
                         </form>
 
-                        {/* Clever Button (Dummy) */}
-                        <button className="w-full flex items-center justify-center gap-2 bg-[#437AF8] text-white py-2.5 px-4 rounded shadow-sm hover:bg-[#2a5bd6] transition-colors font-medium text-sm">
-                            <div className="bg-white rounded-sm w-6 h-6 flex items-center justify-center text-[#437AF8] font-bold text-xs">C</div>
-                            Sign up with Clever
-                        </button>
+                        {/* Yandex Button */}
+                        <form action={loginYandexAction} className="w-full">
+                            <button className="w-full flex items-center justify-center gap-2 bg-[#fc3f1d] text-white py-2.5 px-4 rounded shadow-sm hover:bg-[#e0381a] transition-colors font-medium text-sm">
+                                <span className="bg-white p-1 rounded-sm flex items-center justify-center w-6 h-6 text-[#fc3f1d] font-bold">
+                                    Y
+                                </span>
+                                Sign up with Yandex
+                            </button>
+                        </form>
                     </div>
 
                     <div className="relative mb-6">
