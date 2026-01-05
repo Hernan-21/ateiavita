@@ -16,7 +16,7 @@ export function ClassList({ courseId, units }: ClassListProps) {
     const router = useRouter();
 
     const handleCreateClass = async () => {
-        const title = window.prompt("Enter class name:");
+        const title = window.prompt("Enter content name:");
         if (!title) return;
 
         try {
@@ -38,20 +38,20 @@ export function ClassList({ courseId, units }: ClassListProps) {
     return (
         <div className="space-y-4">
             <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-bold text-gray-800">Classes</h2>
+                <h2 className="text-xl font-bold text-gray-800">Content</h2>
                 <button
                     onClick={handleCreateClass}
                     className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors text-sm font-medium"
                 >
                     <Plus className="h-4 w-4" />
-                    New Class
+                    New Content
                 </button>
             </div>
 
             <div className="grid gap-3">
                 {units.length === 0 ? (
                     <div className="text-center py-12 border-2 border-dashed border-gray-100 rounded-xl">
-                        <p className="text-gray-400">No classes yet. Create your first one!</p>
+                        <p className="text-gray-400">No content yet. Create your first one!</p>
                     </div>
                 ) : (
                     units.map((unit, index) => (

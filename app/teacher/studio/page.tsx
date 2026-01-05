@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { mapPrismaCourseToLevel } from "@/lib/mapper";
 import { CourseGridClient } from "@/components/studio/dashboard/course-grid-client";
+import { CreateCourseModal } from "@/components/studio/create-course-modal";
 import { Plus } from "lucide-react";
 
 export default async function StudioContentPage() {
@@ -18,12 +19,7 @@ export default async function StudioContentPage() {
                     <p className="text-gray-500">Manage your courses and learning materials</p>
                 </div>
 
-                <div className="flex gap-3">
-                    <button className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium shadow-sm transition-colors">
-                        <Plus className="w-4 h-4" />
-                        New Course
-                    </button>
-                </div>
+                <CreateCourseModal />
             </div>
 
             {/* Content Grid (Not Table) */}

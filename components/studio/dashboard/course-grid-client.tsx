@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { Plus, Trash2, Loader2 } from "lucide-react";
 import { AddToClassModal } from "@/components/studio/dashboard/add-to-class-modal";
 
 interface Course {
@@ -14,7 +15,36 @@ interface Course {
 }
 
 export function CourseGridClient({ courses }: { courses: Course[] }) {
+    const router = useRouter();
     const [selectedCourse, setSelectedCourse] = useState<{ id: string, title: string } | null>(null);
+    const [deletingId, setDeletingId] = useState<string | null>(null);
+
+    const handleDelete = async (e: React.MouseEvent, courseId: string) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (!window.confirm("Are you sure you want to delete this course? This action cannot be undone.")) {
+            return;
+        }
+
+        try {
+            setDeletingId(courseId);
+            const res = await fetch(`/api/courses/${courseId}`, {
+                method: "DELETE",
+            });
+
+            if (!res.ok) {
+                throw new Error("Failed to delete");
+            }
+
+            router.refresh();
+        } catch (error) {
+            console.error(error);
+            alert("Something went wrong");
+        } finally {
+            setDeletingId(null);
+        }
+    };
 
     return (
         <>
@@ -37,6 +67,20 @@ export function CourseGridClient({ courses }: { courses: Course[] }) {
                                 </div>
                             </div>
                         </Link>
+
+                        {/* Delete Button */}
+                        <button
+                            onClick={(e) => handleDelete(e, course.id)}
+                            disabled={deletingId === course.id}
+                            className="absolute top-3 right-3 p-2 bg-white/80 hover:bg-red-50 text-gray-400 hover:text-red-600 rounded-full transition-all opacity-0 group-hover:opacity-100 disabled:opacity-50"
+                            title="Delete course"
+                        >
+                            {deletingId === course.id ? (
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                                <Trash2 className="w-4 h-4" />
+                            )}
+                        </button>
 
                         {/* Overlay Add Button */}
                         <button

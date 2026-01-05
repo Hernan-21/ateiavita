@@ -37,7 +37,7 @@ export default async function EditorPage({ params }: { params: Promise<{ courseI
                         <span className="text-gray-300">/</span>
                         <span className="text-sm font-medium text-gray-500">{rawCourse.title}</span>
                         <span className="text-gray-300">/</span>
-                        <span className="text-sm font-medium text-gray-900">{unit?.title || "New Class"}</span>
+                        <span className="text-sm font-medium text-gray-900">{unit?.title || "New Content"}</span>
                     </div>
                     <div className="text-sm text-gray-500">
                         Editing Mode
