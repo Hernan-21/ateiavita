@@ -3,7 +3,7 @@
 import { r2 } from "@/lib/r2";
 import { PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { v4 as uuidv4 } from "uuid";
+
 
 const BUCKET_NAME = process.env.R2_BUCKET_NAME;
 const PUBLIC_URL = process.env.R2_PUBLIC_URL;
@@ -24,8 +24,8 @@ export async function getPresignedUploadUrl(
         }
 
         const fileExtension = contentType.split("/")[1] || "bin";
-        const uniqueKey = `${uuidv4()}.${fileExtension}`;
-        const key = fileName ? `${uuidv4()}-${fileName}` : uniqueKey;
+        const uniqueKey = `${crypto.randomUUID()}.${fileExtension}`;
+        const key = fileName ? `${crypto.randomUUID()}-${fileName}` : uniqueKey;
 
         const command = new PutObjectCommand({
             Bucket: BUCKET_NAME,

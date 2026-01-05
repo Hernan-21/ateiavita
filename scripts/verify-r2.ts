@@ -1,6 +1,7 @@
-
-import { r2 } from "../lib/r2.js";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 // Helper to handle relative path resolution or TS execution
 // We assume this is run with tsx which handles .ts files
@@ -17,6 +18,12 @@ async function main() {
             console.log("Current R2_BUCKET_NAME:", bucketName);
             process.exit(1);
         }
+
+        // Dynamic import to ensure env vars are loaded before client initialization
+        // We use relative path for import
+        const { r2 } = await import("../lib/r2");
+
+
 
         console.log(`Attempting to upload a test file to bucket "${bucketName}" (Account ID: ${accountId})...`);
 

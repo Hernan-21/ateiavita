@@ -141,25 +141,54 @@ export function FileUpload({ onUploadComplete, accept = "application/pdf", curre
                 </div>
             ) : (
                 // File Preview / Current State
-                <div className="flex items-center gap-3 p-3 border border-indigo-100 bg-indigo-50 rounded-lg group">
-                    <div className="p-2 bg-white rounded-md shrink-0">
-                        <FileText className="h-5 w-5 text-indigo-600" />
+                <div
+                    className="relative group cursor-default"
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
+                >
+                    {isDragging && (
+                        <div className="absolute inset-0 bg-indigo-50 border-2 border-dashed border-indigo-500 rounded-lg flex items-center justify-center z-10 opacity-90">
+                            <p className="text-sm text-indigo-700 font-medium pointer-events-none">Drop to replace</p>
+                        </div>
+                    )}
+
+                    <div className="flex items-center gap-3 p-3 border border-indigo-100 bg-indigo-50 rounded-lg">
+                        <div className="p-2 bg-white rounded-md shrink-0">
+                            <FileText className="h-5 w-5 text-indigo-600" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                            <p className="text-sm font-medium text-indigo-900 truncate">
+                                {currentUrl?.split('/').pop() || "Uploaded File"}
+                            </p>
+                            <div className="flex items-center gap-3 mt-1">
+                                <a href={currentUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-indigo-600 hover:underline">
+                                    View File
+                                </a>
+                                <button
+                                    onClick={() => fileInputRef.current?.click()}
+                                    className="text-xs text-gray-500 hover:text-indigo-600 transition-colors"
+                                >
+                                    Replace
+                                </button>
+                            </div>
+                        </div>
+                        <button
+                            onClick={() => onUploadComplete("")} // Clear URL
+                            className="p-1 hover:bg-white rounded-full text-indigo-400 hover:text-red-500 transition-colors"
+                            title="Remove file"
+                        >
+                            <X className="h-4 w-4" />
+                        </button>
                     </div>
-                    <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium text-indigo-900 truncate">
-                            {currentUrl?.split('/').pop() || "Uploaded File"}
-                        </p>
-                        <a href={currentUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-indigo-600 hover:underline">
-                            View File
-                        </a>
-                    </div>
-                    <button
-                        onClick={() => onUploadComplete("")} // Clear URL
-                        className="p-1 hover:bg-white rounded-full text-indigo-400 hover:text-red-500 transition-colors"
-                        title="Remove file"
-                    >
-                        <X className="h-4 w-4" />
-                    </button>
+                    {/* Hidden input for replace action */}
+                    <input
+                        ref={fileInputRef}
+                        type="file"
+                        className="hidden"
+                        accept={accept}
+                        onChange={handleFileSelect}
+                    />
                 </div>
             )}
         </div>
