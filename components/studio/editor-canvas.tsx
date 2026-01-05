@@ -13,7 +13,7 @@ const ICONS = {
 }
 
 export function EditorCanvas() {
-    const { state, selectTask, deleteTask, updateUnitTitle } = useStudio();
+    const { state, selectTask, deleteTask, updateUnit } = useStudio();
 
     return (
         <div className="w-full max-w-3xl space-y-8 pb-20">
@@ -22,7 +22,7 @@ export function EditorCanvas() {
                 <input
                     type="text"
                     value={state.currentUnit.title}
-                    onChange={(e) => updateUnitTitle(e.target.value)}
+                    onChange={(e) => updateUnit({ title: e.target.value })}
                     className="text-3xl font-bold text-gray-800 w-full border-b border-transparent hover:border-gray-200 focus:border-indigo-500 focus:outline-none bg-transparent placeholder-gray-300"
                     placeholder="Untitled Unit"
                 />

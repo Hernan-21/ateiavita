@@ -59,6 +59,7 @@ model Unit {
   courseId  String
   course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   tasks     Task[]
+  pdfUrl    String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

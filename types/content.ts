@@ -78,6 +78,7 @@ export type Task = VideoTask | QuizTask | PDFTask | AudioTask;
 export interface LessonUnit {
     id: string;
     title: string;
+    pdfUrl?: string;
     tasks: Task[]; // Replaces the old 'materials' array
 }
 

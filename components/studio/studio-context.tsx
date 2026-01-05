@@ -17,7 +17,7 @@ interface StudioContextType {
     selectTask: (id: string | null) => void;
     updateTask: (id: string, updates: Partial<Task>) => void;
     deleteTask: (id: string) => void;
-    updateUnitTitle: (title: string) => void;
+    updateUnit: (updates: Partial<LessonUnit>) => void;
     reorderTasks: (startIndex: number, endIndex: number) => void;
     saveUnit: () => Promise<void>;
 }
@@ -78,10 +78,10 @@ export function StudioProvider({ children, initialUnit }: { children: React.Reac
         }));
     };
 
-    const updateUnitTitle = (title: string) => {
+    const updateUnit = (updates: Partial<LessonUnit>) => {
         setState(prev => ({
             ...prev,
-            currentUnit: { ...prev.currentUnit, title }
+            currentUnit: { ...prev.currentUnit, ...updates }
         }));
     }
 
@@ -117,11 +117,14 @@ export function StudioProvider({ children, initialUnit }: { children: React.Reac
         // Let's try to assume we can just loop through.
 
         try {
-            // 1. Update Unit Title
+            // 1. Update Unit
             await fetch(`/api/units/${unitId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ title: state.currentUnit.title })
+                body: JSON.stringify({
+                    title: state.currentUnit.title,
+                    pdfUrl: state.currentUnit.pdfUrl
+                })
             });
 
             // 2. Sync Tasks
@@ -169,7 +172,7 @@ export function StudioProvider({ children, initialUnit }: { children: React.Reac
 
     return (
         <StudioContext.Provider value={{
-            state, addTask, selectTask, updateTask, deleteTask, updateUnitTitle, reorderTasks, saveUnit
+            state, addTask, selectTask, updateTask, deleteTask, updateUnit, reorderTasks, saveUnit
         }}>
             {children}
         </StudioContext.Provider>

@@ -27,7 +27,8 @@ export async function PUT(request: Request, { params }: { params: Promise<{ unit
         const unit = await prisma.unit.update({
             where: { id: unitId },
             data: {
-                title: body.title
+                title: body.title,
+                pdfUrl: body.pdfUrl
             }
         });
         return NextResponse.json(unit);

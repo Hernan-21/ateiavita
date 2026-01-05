@@ -7,7 +7,7 @@ import { TaskType } from "@/types/content";
 const TOOLS: { type: TaskType; label: string; icon: React.ElementType; color: string }[] = [
     { type: 'video', label: 'Video Player', icon: Video, color: 'text-red-500' },
     { type: 'quiz', label: 'Quiz / Exam', icon: CheckSquare, color: 'text-green-500' },
-    { type: 'pdf', label: 'PDF Viewer', icon: FileText, color: 'text-blue-500' },
+    // { type: 'pdf', label: 'PDF Viewer', icon: FileText, color: 'text-blue-500' }, // Removed in favor of Unit PDF
     { type: 'audio', label: 'Audio Player', icon: Music, color: 'text-purple-500' },
     { type: 'fill_blank', label: 'Fill in Blanks', icon: AlignLeft, color: 'text-orange-500' },
     { type: 'matching', label: 'Matching Game', icon: GripVertical, color: 'text-indigo-500' },
