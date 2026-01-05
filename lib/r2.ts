@@ -1,16 +1,19 @@
 import { S3Client } from "@aws-sdk/client-s3";
 
-if (!process.env.R2_ACCOUNT_ID || !process.env.R2_ACCESS_KEY_ID || !process.env.R2_SECRET_ACCESS_KEY) {
-    // Only throw in production or if needed. For dev we might want to skip to avoid crashing if vars aren't set yet.
-    // console.warn("R2 environment variables are missing.");
+const accountId = process.env.R2_ACCOUNT_ID;
+const accessKeyId = process.env.R2_ACCESS_KEY_ID;
+const secretAccessKey = process.env.R2_SECRET_ACCESS_KEY;
+
+if (!accountId || !accessKeyId || !secretAccessKey) {
+    throw new Error("R2 environment variables (R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY) are missing. Please check your .env file or Vercel project settings.");
 }
 
 export const r2 = new S3Client({
     region: "auto",
-    endpoint: `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+    endpoint: `https://${accountId}.r2.cloudflarestorage.com`,
     credentials: {
-        accessKeyId: process.env.R2_ACCESS_KEY_ID || "",
-        secretAccessKey: process.env.R2_SECRET_ACCESS_KEY || "",
+        accessKeyId: accessKeyId,
+        secretAccessKey: secretAccessKey,
     },
     forcePathStyle: true,
 });
