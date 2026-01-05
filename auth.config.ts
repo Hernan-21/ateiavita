@@ -24,7 +24,7 @@ export const authConfig = {
 
             if (isOnDashboard) {
                 if (isLoggedIn) return true
-                return false // Redirect to login (or pages.signIn)
+                return Response.redirect(new URL("/welcome", nextUrl))
             } else if (isOnWelcome || isOnLogin || isOnRegister) {
                 if (isLoggedIn) {
                     return Response.redirect(new URL("/", nextUrl))
