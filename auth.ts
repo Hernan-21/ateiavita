@@ -1,14 +1,16 @@
 import NextAuth from "next-auth"
-import Google from "next-auth/providers/google"
-import Credentials from "next-auth/providers/credentials"
+import { authConfig } from "./auth.config"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { prisma } from "@/lib/prisma"
+import Credentials from "next-auth/providers/credentials"
 import bcrypt from "bcryptjs"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+    ...authConfig,
     adapter: PrismaAdapter(prisma),
+    session: { strategy: "jwt" },
     providers: [
-        Google,
+        ...authConfig.providers.filter((p: any) => p.id !== "credentials"), // Remove placeholder credentials
         Credentials({
             credentials: {
                 email: { label: "Email", type: "email" },
@@ -40,23 +42,4 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             },
         }),
     ],
-    session: { strategy: "jwt" },
-    callbacks: {
-        async jwt({ token, user }) {
-            if (user) {
-                token.role = user.role
-            }
-            return token
-        },
-        async session({ session, token }) {
-            if (token.sub && session.user) {
-                session.user.id = token.sub
-            }
-            // Add custom fields to session if needed (e.g. role)
-            if (session.user) {
-                session.user.role = token.role as string
-            }
-            return session
-        },
-    },
 })
