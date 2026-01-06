@@ -7,6 +7,19 @@ export async function POST(request: Request) {
     try {
         const { filename, contentType } = await request.json();
 
+        // Runtime validation of environment variables
+        if (!process.env.R2_ACCOUNT_ID || !process.env.R2_ACCESS_KEY_ID || !process.env.R2_SECRET_ACCESS_KEY) {
+            console.error("Missing R2 environment variables at runtime");
+            return NextResponse.json({
+                error: "Server configuration error: R2 credentials missing",
+                debug: {
+                    hasAccountId: !!process.env.R2_ACCOUNT_ID,
+                    hasAccessKey: !!process.env.R2_ACCESS_KEY_ID,
+                    hasSecret: !!process.env.R2_SECRET_ACCESS_KEY
+                }
+            }, { status: 500 });
+        }
+
         if (!filename || !contentType) {
             return NextResponse.json({ error: "Missing filename or contentType" }, { status: 400 });
         }
