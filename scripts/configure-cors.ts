@@ -1,4 +1,3 @@
-import { r2 } from "../lib/r2";
 import { PutBucketCorsCommand } from "@aws-sdk/client-s3";
 import * as dotenv from "dotenv";
 
@@ -13,6 +12,9 @@ async function main() {
             process.exit(1);
         }
 
+        // Dynamic import to ensure env vars are loaded before client initialization
+        const { r2 } = await import("../lib/r2");
+
         console.log(`Setting CORS configuration for bucket: ${bucketName}...`);
 
         const command = new PutBucketCorsCommand({
@@ -22,7 +24,7 @@ async function main() {
                     {
                         AllowedHeaders: ["*"],
                         AllowedMethods: ["PUT", "POST", "GET", "HEAD"],
-                        AllowedOrigins: ["http://localhost:3000", "https://*.vercel.app"], // Add your production domain here
+                        AllowedOrigins: ["http://localhost:3000", "https://*.vercel.app", "https://ateiavita.pro"], // Add your production domain here
                         ExposeHeaders: ["ETag"],
                         MaxAgeSeconds: 3000,
                     },
