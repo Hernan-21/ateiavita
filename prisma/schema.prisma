@@ -16,6 +16,7 @@ model User {
   password      String?
   role          String    @default("STUDENT") // STUDENT, TEACHER, ADMIN
   accounts      Account[]
+  enrollments   Enrollment[]
   
   // Relations
   createdAt     DateTime  @default(now())
@@ -82,11 +83,24 @@ model Task {
 model SchoolClass {
   id          String        @id @default(uuid())
   name        String
+  code        String        @unique @default(cuid()) 
   description String?
   isArchived  Boolean       @default(false)
   courses     SchoolClassCourse[]
+  enrollments Enrollment[]
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
+}
+
+model Enrollment {
+  id        String      @id @default(cuid())
+  userId    String
+  classId   String
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  class     SchoolClass @relation(fields: [classId], references: [id], onDelete: Cascade)
+  joinedAt  DateTime    @default(now())
+
+  @@unique([userId, classId])
 }
 
 model SchoolClassCourse {

@@ -25,11 +25,13 @@ export async function POST(request: Request) {
             data: {
                 name: body.name,
                 description: body.description,
+                code: Math.random().toString(36).substring(2, 8).toUpperCase()
             }
         });
 
         return NextResponse.json(newClass);
-    } catch (error) {
-        return NextResponse.json({ error: "Failed to create class" }, { status: 500 });
+    } catch (error: any) {
+        console.error("CREATE CLASS ERROR:", error);
+        return NextResponse.json({ error: error.message || "Failed to create class" }, { status: 500 });
     }
 }

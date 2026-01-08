@@ -21,6 +21,9 @@ export function BoardHeader() {
 
             if (res.ok) {
                 router.refresh();
+            } else {
+                const data = await res.json();
+                alert(`Error: ${data.error || "Failed to create class"}`);
             }
         } catch (error) {
             console.error("Failed to create class", error);

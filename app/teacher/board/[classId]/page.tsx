@@ -29,7 +29,7 @@ export default async function ClassDetailPage({ params }: { params: Promise<{ cl
 
                 <div className="flex items-center gap-2">
                     <span className="bg-indigo-50 text-indigo-700 px-3 py-1 rounded text-sm font-medium flex items-center gap-1 border border-indigo-100">
-                        Class code: 4Q2ACC
+                        Class code: {schoolClass.code}
                     </span>
                     <button className="p-2 hover:bg-gray-100 rounded-full text-gray-400">
                         <MoreHorizontal className="w-5 h-5" />
