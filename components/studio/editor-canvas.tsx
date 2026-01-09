@@ -1,7 +1,7 @@
 "use client";
 
 import { useStudio } from "./studio-context";
-import { Trash2, GripVertical, Video, FileText, CheckSquare, Music } from "lucide-react";
+import { Trash2, GripVertical, Video, FileText, CheckSquare, Music, MessageCircle } from "lucide-react";
 
 const ICONS = {
     video: Video,
@@ -9,7 +9,9 @@ const ICONS = {
     pdf: FileText,
     audio: Music,
     matching: GripVertical,
-    fill_blank: FileText
+    fill_blank: FileText,
+    drag_drop: GripVertical,
+    conversation: MessageCircle
 }
 
 export function EditorCanvas() {

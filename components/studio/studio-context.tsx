@@ -191,6 +191,8 @@ function createDefaultPayload(type: TaskType): any {
     switch (type) {
         case 'video': return { provider: 'youtube', url: '' };
         case 'quiz': return { questions: [] };
+        case 'drag_drop': return { word: '', hint: '' };
+        case 'conversation': return { lines: [] };
         case 'pdf': return { fileUrl: '', allowDownload: true };
         default: return {};
     }

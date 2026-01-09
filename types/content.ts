@@ -1,4 +1,4 @@
-export type TaskType = 'video' | 'quiz' | 'pdf' | 'audio' | 'matching' | 'fill_blank';
+export type TaskType = 'video' | 'quiz' | 'pdf' | 'audio' | 'matching' | 'fill_blank' | 'drag_drop' | 'conversation';
 
 export interface BaseTask {
     id: string;
@@ -10,6 +10,24 @@ export interface BaseTask {
         points: number;
         timeLimit?: number; // seconds
     };
+}
+
+export interface DragDropPayload {
+    word: string;          // The correct word (e.g. "HOUSE")
+    hint?: string;         // Optional hint (e.g. "Casa")
+    distractors?: string[]; // Optional extra letters that don't belong
+}
+
+export interface DialogueLine {
+    id: string;
+    speaker: string;
+    text: string;
+    messageDirection?: 'left' | 'right';
+}
+
+export interface ConversationPayload {
+    lines: DialogueLine[];
+    context?: string; // Optional description of the scene
 }
 
 // --- PAYLOAD DEFINITIONS ---
@@ -71,7 +89,22 @@ export interface AudioTask extends BaseTask {
     payload: AudioPayload;
 }
 
-export type Task = VideoTask | QuizTask | PDFTask | AudioTask;
+export interface AudioTask extends BaseTask {
+    type: 'audio';
+    payload: AudioPayload;
+}
+
+export interface DragDropTask extends BaseTask {
+    type: 'drag_drop';
+    payload: DragDropPayload;
+}
+
+export interface ConversationTask extends BaseTask {
+    type: 'conversation';
+    payload: ConversationPayload;
+}
+
+export type Task = VideoTask | QuizTask | PDFTask | AudioTask | DragDropTask | ConversationTask;
 
 // --- LESSON STRUCTURE ---
 

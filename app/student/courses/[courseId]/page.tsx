@@ -69,13 +69,30 @@ export default async function StudentCoursePage({ params }: { params: Promise<{ 
                                         <span className="text-indigo-600 mr-2">Unidad {index + 1}:</span>
                                         {unit.title}
                                     </h2>
-                                    <span className="text-xs font-semibold bg-gray-100 text-gray-500 px-3 py-1 rounded-full">
-                                        {unit.tasks.length} Tareas
-                                    </span>
+                                    <div className="flex items-center gap-3">
+                                        {unit.pdfUrl && (
+                                            <a
+                                                href={unit.pdfUrl}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="flex items-center gap-1 text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1.5 rounded-full hover:bg-blue-100 transition-colors"
+                                            >
+                                                <FileText className="w-3 h-3" />
+                                                Guide PDF
+                                            </a>
+                                        )}
+                                        <span className="text-xs font-semibold bg-gray-100 text-gray-500 px-3 py-1 rounded-full">
+                                            {unit.tasks.length} Tareas
+                                        </span>
+                                    </div>
                                 </div>
                                 <div className="divide-y divide-gray-50">
                                     {unit.tasks.map(task => (
-                                        <div key={task.id} className="px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors group cursor-pointer">
+                                        <Link
+                                            key={task.id}
+                                            href={`/student/courses/${course.id}/tasks/${task.id}`}
+                                            className="px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors group cursor-pointer block"
+                                        >
                                             <div className="flex items-center gap-3">
                                                 <div className="text-gray-300 group-hover:text-indigo-500 transition-colors">
                                                     {/* Placeholder logic for 'done' status would go here */}
@@ -92,7 +109,7 @@ export default async function StudentCoursePage({ params }: { params: Promise<{ 
                                                 {/* Action Button/Icon */}
                                                 <PlayCircle className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity" />
                                             </div>
-                                        </div>
+                                        </Link>
                                     ))}
                                     {unit.tasks.length === 0 && (
                                         <div className="px-6 py-8 text-center text-gray-400 text-sm italic">

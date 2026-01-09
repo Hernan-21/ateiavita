@@ -40,7 +40,7 @@ export function StudioLayout() {
             </main>
 
             {/* Right Sidebar: Properties */}
-            <aside className="w-80 bg-white border-l border-gray-200 flex flex-col shrink-0">
+            <aside className="w-64 bg-white border-l border-gray-200 flex flex-col shrink-0">
                 <div className="p-4 border-b border-gray-100 flex justify-between items-center">
                     <h2 className="text-xs font-bold text-gray-500 uppercase tracking-wider">Properties</h2>
                     <button
