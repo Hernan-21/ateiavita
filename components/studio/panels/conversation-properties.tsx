@@ -77,7 +77,7 @@ export function ConversationProperties({ task, updateTask }: { task: Conversatio
                     <textarea
                         value={script}
                         onChange={(e) => setScript(e.target.value)}
-                        className="w-full h-32 text-xs p-2 border border-gray-300 rounded focus:ring-2 focus:ring-teal-500 font-mono"
+                        className="w-full h-32 text-xs p-2 border border-gray-300 rounded focus:ring-2 focus:ring-teal-500 font-mono bg-white text-gray-900 placeholder:text-gray-400"
                         placeholder={`Maria: Hola, ¿cómo estás?\nJuan: Muy bien, gracias. ¿Y tú?`}
                     />
                     <button
@@ -102,13 +102,13 @@ export function ConversationProperties({ task, updateTask }: { task: Conversatio
                                     <input
                                         value={line.speaker}
                                         onChange={(e) => updateLine(line.id, 'speaker', e.target.value)}
-                                        className="text-xs font-bold text-gray-700 bg-transparent border-none p-0 focus:ring-0 w-full"
+                                        className="text-xs font-bold text-gray-900 bg-transparent border-none p-0 focus:ring-0 w-full placeholder:text-gray-400"
                                     />
                                 </div>
                                 <textarea
                                     value={line.text}
                                     onChange={(e) => updateLine(line.id, 'text', e.target.value)}
-                                    className="w-full text-sm bg-transparent border-none p-0 focus:ring-0 resize-none text-gray-600"
+                                    className="w-full text-sm bg-transparent border-none p-0 focus:ring-0 resize-none text-gray-700 placeholder:text-gray-400"
                                     rows={2}
                                 />
                             </div>

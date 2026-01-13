@@ -2,6 +2,7 @@
 
 import { useStudio } from "./studio-context";
 import { Trash2, GripVertical, Video, FileText, CheckSquare, Music, MessageCircle } from "lucide-react";
+import { TaskPropertiesInline } from "./task-properties-inline";
 
 const ICONS = {
     video: Video,
@@ -35,14 +36,14 @@ export function EditorCanvas() {
 
             {/* Task List */}
             <div className="space-y-4">
-                {state.currentUnit.tasks.map((task, index) => {
+                {state.currentUnit.tasks.map((task) => {
                     const Icon = ICONS[task.type as keyof typeof ICONS] || FileText;
                     const isSelected = state.selectedTaskId === task.id;
 
                     return (
                         <div
                             key={task.id}
-                            onClick={() => selectTask(task.id)}
+                            onClick={() => selectTask(isSelected ? null : task.id)}
                             className={`group relative bg-white rounded-xl border-2 transition-all cursor-pointer overflow-hidden ${isSelected ? 'border-indigo-500 shadow-md ring-4 ring-indigo-50' : 'border-gray-100 hover:border-indigo-200 hover:shadow-sm'}`}
                         >
                             <div className="p-6 flex items-start gap-4">
@@ -67,11 +68,10 @@ export function EditorCanvas() {
                                 </button>
                             </div>
 
-                            {/* Mini Preview of Settings */}
+                            {/* Inline Settings Panel */}
                             {isSelected && (
-                                <div className="bg-indigo-50 px-6 py-2 text-xs font-medium text-indigo-700 flex gap-4">
-                                    <span>Points: {task.settings.points}</span>
-                                    <span> Required: {task.settings.required ? 'Yes' : 'No'}</span>
+                                <div className="border-t border-gray-100 p-6 bg-gray-50/50 cursor-default" onClick={(e) => e.stopPropagation()}>
+                                    <TaskPropertiesInline task={task} />
                                 </div>
                             )}
                         </div>

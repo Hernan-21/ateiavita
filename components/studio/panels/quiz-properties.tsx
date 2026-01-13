@@ -52,7 +52,7 @@ export function QuizProperties({ task, updateTask }: { task: QuizTask, updateTas
                             type="text"
                             value={q.text}
                             onChange={(e) => updateQuestion(q.id, 'text', e.target.value)}
-                            className="w-full px-2 py-1 border border-gray-300 rounded mb-2"
+                            className="w-full px-2 py-1 border border-gray-300 rounded mb-2 bg-white text-gray-900 placeholder:text-gray-400"
                         />
 
                         <div className="space-y-1 ml-2">
@@ -72,7 +72,7 @@ export function QuizProperties({ task, updateTask }: { task: QuizTask, updateTas
                                             newOps[optIndex] = e.target.value;
                                             updateQuestion(q.id, 'options', newOps);
                                         }}
-                                        className="w-full px-2 py-1 border border-gray-200 rounded text-xs bg-white"
+                                        className="w-full px-2 py-1 border border-gray-200 rounded text-xs bg-white text-gray-900 placeholder:text-gray-400"
                                     />
                                 </div>
                             ))}

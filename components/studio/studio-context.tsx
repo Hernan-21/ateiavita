@@ -67,7 +67,11 @@ export function StudioProvider({ children, initialUnit }: { children: React.Reac
         }));
     };
 
-    const deleteTask = (id: string) => {
+    const deleteTask = async (id: string) => {
+        // Optimistically remove from UI
+        const previousUnit = state.currentUnit;
+        const taskToDelete = previousUnit.tasks.find(t => t.id === id);
+
         setState(prev => ({
             ...prev,
             currentUnit: {
@@ -76,6 +80,21 @@ export function StudioProvider({ children, initialUnit }: { children: React.Reac
             },
             selectedTaskId: prev.selectedTaskId === id ? null : prev.selectedTaskId
         }));
+
+        // If it's a real persistent task (UUID length > 20), delete from DB
+        if (taskToDelete && id.length > 20) {
+            try {
+                const res = await fetch(`/api/tasks/${id}`, { method: 'DELETE' });
+                if (!res.ok) {
+                    throw new Error("Failed to delete");
+                }
+            } catch (e) {
+                console.error("Delete failed, rollback", e);
+                // Rollback state if desired, or just alert
+                alert("Failed to delete task from server.");
+                setState(prev => ({ ...prev, currentUnit: previousUnit }));
+            }
+        }
     };
 
     const updateUnit = (updates: Partial<LessonUnit>) => {
@@ -104,18 +123,6 @@ export function StudioProvider({ children, initialUnit }: { children: React.Reac
             order: index
         }));
 
-        // We need to sync tasks. 
-        // For simple MVP:
-        // 1. Delete all tasks in unit (dangerous but easy) OR
-        // 2. Upsert each task.
-        // Let's use the individual Create/Update logic for now or a new Bulk Sync endpoint?
-        // Usage of existing endpoints:
-        // PUT /api/units/[unitId]/tasks (reorder only currently)
-
-        // Let's UPDATE existing tasks and CREATE new ones?
-        // Actually, the easiest way for "Save" button is to just save everything.
-        // Let's try to assume we can just loop through.
-
         try {
             // 1. Update Unit
             await fetch(`/api/units/${unitId}`, {
@@ -128,18 +135,12 @@ export function StudioProvider({ children, initialUnit }: { children: React.Reac
             });
 
             // 2. Sync Tasks
-            // Ideally we'd have a bulk endpoint. Let's do parallel requests for now.
-            await Promise.all(tasks.map(async (task) => {
-                // If it's a new task (generated ID might clash or we need a flag? 
-                // Context generates IDs with Math.random(). Real DB IDs are UUIDs.
-                // Issue: If we send a generated ID to update, it won't find it.
-                // We need to know if it's new.
-                // Heuristic: If ID length is small (current generateId is 9 chars), it might be new?
-                // UUIDs are 36 chars.
+            const updatedTasks = await Promise.all(tasks.map(async (task) => {
                 const isNew = task.id.length < 20;
 
+                let response;
                 if (isNew) {
-                    await fetch(`/api/units/${unitId}/tasks`, {
+                    response = await fetch(`/api/units/${unitId}/tasks`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -150,17 +151,50 @@ export function StudioProvider({ children, initialUnit }: { children: React.Reac
                         })
                     });
                 } else {
-                    // Update existing task
-                    await fetch(`/api/tasks/${task.id}`, {
+                    response = await fetch(`/api/tasks/${task.id}`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             title: task.title,
-                            payload: task.payload,
-                            settings: task.settings
+                            payload: task.payload || {},
+                            settings: task.settings || {}
                         })
                     });
                 }
+
+                if (!response.ok) {
+                    throw new Error(`Failed to save task ${task.title}`);
+                }
+
+                const savedData = await response.json();
+
+                // Parse the response content/settings back to object if they are strings (from DB)
+                // The API usually returns the Prisma object where content is string.
+                // We need to map it back to our Task domain shape.
+                return {
+                    ...task,
+                    id: savedData.id,
+                    // If the server returns strict Prisma objects, content is string.
+                    // But we want to keep our client-side payload if possible, OR parse the result.
+                    // For simplicity, let's keep our local payload but take the ID.
+                    // However, taking the server version is safer.
+                    // Let's rely on local state for content to avoid flicker, but UPDATE ID.
+                } as Task;
+            }));
+
+            // Update state with confirmed IDs
+            setState(prev => ({
+                ...prev,
+                currentUnit: {
+                    ...prev.currentUnit,
+                    tasks: updatedTasks
+                },
+                // If the selected task was new, its ID changed. Update selection.
+                selectedTaskId: prev.selectedTaskId
+                    ? (tasks.find(t => t.id === prev.selectedTaskId)?.id !== updatedTasks.find((_, i) => tasks[i].id === prev.selectedTaskId)?.id
+                        ? updatedTasks.find((_, i) => tasks[i].id === prev.selectedTaskId)?.id || null
+                        : prev.selectedTaskId)
+                    : null
             }));
 
             alert("Saved successfully!");
@@ -193,6 +227,8 @@ function createDefaultPayload(type: TaskType): any {
         case 'quiz': return { questions: [] };
         case 'drag_drop': return { word: '', hint: '' };
         case 'conversation': return { lines: [] };
+        case 'matching': return { pairs: [] };
+        case 'fill_blank': return { sentence: '', correctAnswer: '' };
         case 'pdf': return { fileUrl: '', allowDownload: true };
         default: return {};
     }

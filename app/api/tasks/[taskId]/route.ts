@@ -11,8 +11,8 @@ export async function PUT(request: Request, { params }: { params: Promise<{ task
             where: { id: taskId },
             data: {
                 title: body.title,
-                content: body.payload ? JSON.stringify(body.payload) : undefined,
-                settings: body.settings ? JSON.stringify(body.settings) : undefined,
+                content: (body.payload !== undefined) ? JSON.stringify(body.payload) : undefined,
+                settings: (body.settings !== undefined) ? JSON.stringify(body.settings) : undefined,
             }
         });
         return NextResponse.json(task);

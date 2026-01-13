@@ -19,7 +19,7 @@ export function DragDropProperties({ task, updateTask }: { task: DragDropTask, u
                         type="text"
                         value={task.payload.word || ""}
                         onChange={(e) => updatePayload('word', e.target.value.toUpperCase())}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 font-mono tracking-widest text-black"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 font-mono tracking-widest bg-white text-gray-900 placeholder:text-gray-400"
                         placeholder="e.g. HOUSE"
                     />
                     <p className="text-xs text-gray-400 mt-1">
@@ -33,7 +33,7 @@ export function DragDropProperties({ task, updateTask }: { task: DragDropTask, u
                         type="text"
                         value={task.payload.hint || ""}
                         onChange={(e) => updatePayload('hint', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-black"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white text-gray-900 placeholder:text-gray-400"
                         placeholder="e.g. Translate 'Casa'"
                     />
                 </div>

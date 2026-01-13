@@ -17,7 +17,7 @@ export function VideoProperties({ task, updateTask }: { task: VideoTask, updateT
                 <select
                     value={task.payload.provider}
                     onChange={(e) => updatePayload('provider', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm bg-white"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm bg-white text-gray-900"
                 >
                     <option value="youtube">YouTube</option>
                     <option value="vimeo">Vimeo</option>
@@ -31,7 +31,7 @@ export function VideoProperties({ task, updateTask }: { task: VideoTask, updateT
                     type="text"
                     value={task.payload.url}
                     onChange={(e) => updatePayload('url', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm font-mono"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm font-mono bg-white text-gray-900 placeholder:text-gray-400"
                     placeholder="e.g. dQw4w9WgXcQ"
                 />
                 <p className="text-xs text-gray-400 mt-1">Paste the full URL or just the ID</p>

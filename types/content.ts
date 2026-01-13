@@ -30,6 +30,16 @@ export interface ConversationPayload {
     context?: string; // Optional description of the scene
 }
 
+export interface MatchingPair {
+    id: string;
+    left: string; // e.g. "Cat"
+    right: string; // e.g. "Gato"
+}
+
+export interface MatchingPayload {
+    pairs: MatchingPair[];
+}
+
 // --- PAYLOAD DEFINITIONS ---
 
 export interface VideoPayload {
@@ -104,7 +114,22 @@ export interface ConversationTask extends BaseTask {
     payload: ConversationPayload;
 }
 
-export type Task = VideoTask | QuizTask | PDFTask | AudioTask | DragDropTask | ConversationTask;
+export interface MatchingTask extends BaseTask {
+    type: 'matching';
+    payload: MatchingPayload;
+}
+
+export interface FillBlankPayload {
+    sentence: string; // "The cat is _____ the table"
+    correctAnswer: string;
+}
+
+export interface FillBlankTask extends BaseTask {
+    type: 'fill_blank';
+    payload: FillBlankPayload;
+}
+
+export type Task = VideoTask | QuizTask | PDFTask | AudioTask | DragDropTask | ConversationTask | MatchingTask | FillBlankTask;
 
 // --- LESSON STRUCTURE ---
 

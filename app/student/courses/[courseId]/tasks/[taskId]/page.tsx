@@ -3,8 +3,10 @@ import { prisma } from "@/lib/prisma";
 import { redirect, notFound } from "next/navigation";
 import { Navbar } from "@/components/layout/Navbar";
 import { DragDropTaskPlayer } from "@/components/student/tasks/drag-drop-task";
-import { Task, DragDropTask, ConversationTask } from "@/types/content";
+import { Task, DragDropTask, ConversationTask, MatchingTask, FillBlankTask } from "@/types/content";
 import { ConversationTaskPlayer } from "@/components/student/tasks/conversation-task";
+import { MatchingTaskPlayer } from "@/components/student/tasks/matching-task";
+import { FillBlankTaskPlayer } from "@/components/student/tasks/fill-blank-task";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 
@@ -65,6 +67,10 @@ export default async function TaskPlayerPage({ params }: { params: Promise<{ cou
                             <DragDropTaskPlayer payload={(task as DragDropTask).payload} />
                         ) : task.type === 'conversation' ? (
                             <ConversationTaskPlayer payload={(task as ConversationTask).payload} />
+                        ) : task.type === 'matching' ? (
+                            <MatchingTaskPlayer payload={(task as MatchingTask).payload} />
+                        ) : task.type === 'fill_blank' ? (
+                            <FillBlankTaskPlayer payload={(task as FillBlankTask).payload} />
                         ) : (
                             <div className="text-center text-gray-500">
                                 <p>Player not implemented for {task.type} yet.</p>
