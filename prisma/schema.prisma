@@ -17,6 +17,7 @@ model User {
   role          String    @default("STUDENT") // STUDENT, TEACHER, ADMIN
   accounts      Account[]
   enrollments   Enrollment[]
+  taskResults   TaskResult[]
   
   // Relations
   createdAt     DateTime  @default(now())
@@ -74,6 +75,7 @@ model Task {
   settings  String   // JSON string of settings (points, required)
   unitId    String
   unit      Unit     @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  results   TaskResult[]
   order     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -113,4 +115,21 @@ model SchoolClassCourse {
   isSaved    Boolean  @default(false)
 
   @@id([classId, courseId])
+}
+
+model TaskResult {
+  id        String   @id @default(uuid())
+  userId    String
+  taskId    String
+  score     Int      // 0-100
+  completed Boolean  @default(false)
+  attempts  Int      @default(0)
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, taskId])
 }

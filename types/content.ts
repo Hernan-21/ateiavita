@@ -10,6 +10,7 @@ export interface BaseTask {
         points: number;
         timeLimit?: number; // seconds
     };
+    unitId?: string;
 }
 
 export interface DragDropPayload {
