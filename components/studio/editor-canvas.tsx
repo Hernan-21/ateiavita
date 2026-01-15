@@ -16,7 +16,7 @@ const ICONS = {
 }
 
 export function EditorCanvas() {
-    const { state, selectTask, deleteTask, updateUnit } = useStudio();
+    const { state, selectTask, deleteTask, updateUnit, updateTask } = useStudio();
 
     return (
         <div className="w-full max-w-3xl space-y-8 pb-20">
@@ -52,9 +52,19 @@ export function EditorCanvas() {
                                 </div>
 
                                 <div className="flex-1 min-w-0">
-                                    <h3 className={`font-bold text-lg truncate ${isSelected ? 'text-indigo-900' : 'text-gray-800'}`}>
-                                        {task.title}
-                                    </h3>
+                                    {isSelected ? (
+                                        <input
+                                            type="text"
+                                            value={task.title}
+                                            onChange={(e) => updateTask(task.id, { title: e.target.value })}
+                                            className="w-full text-lg font-bold border-b border-indigo-500 focus:outline-none focus:border-indigo-700"
+                                            placeholder="Task title"
+                                        />
+                                    ) : (
+                                        <h3 className={`font-bold text-lg truncate ${isSelected ? 'text-indigo-900' : 'text-gray-800'}`}>
+                                            {task.title}
+                                        </h3>
+                                    )}
                                     <p className="text-sm text-gray-500 truncate">
                                         ID: {task.id} • {task.type.toUpperCase()}
                                     </p>

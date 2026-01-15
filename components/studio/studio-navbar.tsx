@@ -38,8 +38,8 @@ export function StudioNavbar() {
                         {/* Classes Link */}
                         <div className="relative group">
                             <Link
-                                href="/teacher/board"
-                                className={`flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-md transition-colors ${isBoard ? 'text-indigo-600 bg-indigo-50' : 'text-gray-600 hover:text-black hover:bg-gray-50'
+                                href="/teacher/classes"
+                                className={`flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-md transition-colors ${pathname.startsWith('/teacher/classes') ? 'text-indigo-600 bg-indigo-50' : 'text-gray-600 hover:text-black hover:bg-gray-50'
                                     }`}
                             >
                                 Classes

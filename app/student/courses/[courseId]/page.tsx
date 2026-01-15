@@ -40,34 +40,63 @@ export default async function StudentCoursePage({ params }: { params: Promise<{ 
         return <div>Course not found</div>;
     }
 
+    // Calculate total progress and score
+    let totalTasks = 0;
+    let completedTasks = 0;
+    let totalScore = 0; // Sum of scores for completed tasks
+
+    course.units.forEach(unit => {
+        unit.tasks.forEach(task => {
+            totalTasks++;
+            const result = task.results[0];
+            if (result?.completed) {
+                completedTasks++;
+                totalScore += result.score || 0;
+            }
+        });
+    });
+
+    const averageScore = completedTasks > 0 ? Math.round(totalScore / completedTasks) : 0;
+
     return (
         <div className="min-h-screen bg-gray-50/50">
             <Navbar />
 
-            <main className="container mx-auto px-4 md:px-8 py-8 max-w-4xl">
-                {/* Header */}
-                <div className="mb-10">
-                    <Link href="/" className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-900 mb-6 transition-colors">
+            {/* Full Width Header */}
+            <div className={`w-full bg-${course.color || 'indigo'}-50 border-b border-${course.color || 'indigo'}-100`}>
+                <div className="container mx-auto px-4 md:px-8 py-8 max-w-4xl">
+                    <Link href="/" className="inline-flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 mb-8 transition-colors">
                         <ChevronLeft className="w-4 h-4 mr-1" />
-                        Back to Dashboard
+                        Back to Practice Material Level 1
                     </Link>
 
-                    <div className="flex items-start gap-6">
-                        <div className={cn(
-                            "w-20 h-20 rounded-2xl flex items-center justify-center text-4xl font-bold shadow-sm shrink-0",
-                            `bg-${course.color}-100 text-${course.color}-600` // Fallback needed if dynamic color fails
-                        )}
-                            style={{ backgroundColor: '#EEF2FF', color: '#4F46E5' }} // Hardcoded indigo theme for now to ensure look
-                        >
-                            {course.iconChar}
+                    <div className="flex justify-between items-end pb-6">
+                        <div className="flex items-center gap-6">
+                            <div className={cn(
+                                "w-20 h-20 rounded-full flex items-center justify-center text-4xl font-bold shadow-sm shrink-0",
+                                `bg-${course.color || 'indigo'}-100 text-${course.color || 'indigo'}-600`
+                            )}
+                                style={{ backgroundColor: '#EEF2FF', color: '#4F46E5' }} // Fallback if dynamic classes don't load
+                            >
+                                {course.iconChar}
+                            </div>
+
+                            <div>
+                                <h1 className="text-3xl font-bold text-gray-900 mb-1">{course.title}</h1>
+                                <p className="text-gray-500 font-medium">{course.description || "Functional English"}</p>
+                            </div>
                         </div>
-                        <div>
-                            <h1 className="text-3xl font-bold text-gray-900 mb-2">{course.title}</h1>
-                            <p className="text-gray-500 leading-relaxed max-w-2xl">{course.description}</p>
+
+                        {/* Score Badge */}
+                        <div className="bg-indigo-100 rounded-xl px-6 py-3 text-indigo-900 flex flex-col items-center min-w-[140px]">
+                            <span className="text-xs font-semibold uppercase tracking-wide text-indigo-600 mb-0.5">Final Score</span>
+                            <span className="text-3xl font-bold">{averageScore}%</span>
                         </div>
                     </div>
                 </div>
+            </div>
 
+            <main className="container mx-auto px-4 md:px-8 py-8 max-w-4xl">
                 {/* Units List */}
                 <div className="space-y-8">
                     {course.units.length === 0 ? (

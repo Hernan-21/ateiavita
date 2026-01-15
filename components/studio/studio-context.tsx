@@ -163,7 +163,10 @@ export function StudioProvider({ children, initialUnit }: { children: React.Reac
                 }
 
                 if (!response.ok) {
-                    throw new Error(`Failed to save task ${task.title}`);
+                    // Log error but do not abort the whole save operation
+                    const errorText = await response.text();
+                    console.error(`Failed to save task "${task.title}": ${errorText}`);
+                    // Continue to next task
                 }
 
                 const savedData = await response.json();

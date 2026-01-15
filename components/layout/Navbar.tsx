@@ -4,6 +4,7 @@ import { Menu, MessageSquare, MonitorPlay } from "lucide-react"
 import { auth } from "@/auth"
 import { SignIn } from "@/components/auth/auth-buttons"
 import { UserMenu } from "@/components/layout/UserMenu"
+import { FeedbackNotification } from "@/components/student/feedback-notification"
 
 export async function Navbar() {
     const session = await auth()
@@ -23,14 +24,11 @@ export async function Navbar() {
                     </Link>
 
                     <div className="hidden md:flex items-center gap-6">
-                        <Link href="/classes" className="flex items-center gap-2 text-sm font-semibold text-gray-700 hover:text-primary transition-colors">
+                        <Link href="/student/courses" className="flex items-center gap-2 text-sm font-semibold text-gray-700 hover:text-primary transition-colors">
                             <MonitorPlay className="h-4 w-4" />
-                            Classes
+                            Courses
                         </Link>
-                        <Link href="/feedback" className="flex items-center gap-2 text-sm font-semibold text-gray-700 hover:text-primary transition-colors">
-                            <MessageSquare className="h-4 w-4" />
-                            Feedback
-                        </Link>
+                        <FeedbackNotification />
                     </div>
                 </div>
 

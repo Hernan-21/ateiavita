@@ -45,14 +45,36 @@ export default async function StudentPage() {
         }
     });
 
-    const formattedClasses = enrollments.map(e => ({
-        id: e.class.id,
-        name: e.class.name,
-        courses: e.class.courses.map(c => ({
-            course: c.course,
-            status: c.status
-        }))
-    }));
+    // Fetch Feedback
+    const allFeedback = await prisma.feedback.findMany({
+        where: { studentId: user.id },
+        include: {
+            author: true,
+            course: true
+        },
+        orderBy: { createdAt: 'desc' }
+    });
+
+    const formattedClasses = enrollments.map(e => {
+        const classFeedback = allFeedback.filter(f => f.classId === e.class.id);
+
+        return {
+            id: e.class.id,
+            name: e.class.name,
+            description: e.class.description,
+            courses: e.class.courses.map(c => ({
+                course: c.course,
+                status: c.status
+            })),
+            feedback: classFeedback.map(f => ({
+                id: f.id,
+                content: f.content,
+                createdAt: f.createdAt,
+                authorName: f.author.name,
+                courseTitle: f.course.title
+            }))
+        };
+    });
 
     return (
         <div className="min-h-screen bg-gray-50">

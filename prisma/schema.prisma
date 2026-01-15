@@ -18,6 +18,8 @@ model User {
   accounts      Account[]
   enrollments   Enrollment[]
   taskResults   TaskResult[]
+  studentFeedback Feedback[] @relation("StudentFeedback")
+  teacherFeedback Feedback[] @relation("TeacherFeedback")
   
   // Relations
   createdAt     DateTime  @default(now())
@@ -51,6 +53,7 @@ model Course {
   iconChar    String   @default("A")
   units       Unit[]
   classes     SchoolClassCourse[]
+  feedback    Feedback[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -90,6 +93,7 @@ model SchoolClass {
   isArchived  Boolean       @default(false)
   courses     SchoolClassCourse[]
   enrollments Enrollment[]
+  feedback    Feedback[]
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 }
@@ -132,4 +136,23 @@ model TaskResult {
   updatedAt DateTime @updatedAt
 
   @@unique([userId, taskId])
+}
+
+model Feedback {
+  id        String   @id @default(uuid())
+  content   String   @db.Text
+  studentId String
+  courseId  String
+  classId   String?
+  authorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isRead    Boolean  @default(false)
+  
+  student   User     @relation("StudentFeedback", fields: [studentId], references: [id], onDelete: Cascade)
+  author    User     @relation("TeacherFeedback", fields: [authorId], references: [id], onDelete: Cascade)
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  class     SchoolClass? @relation(fields: [classId], references: [id])
+  
+  @@index([studentId, courseId])
 }

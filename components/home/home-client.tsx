@@ -36,7 +36,7 @@ export function HomeClient() {
                 {/* Feedback Banner */}
                 <div className="bg-[#5865F2] rounded-xl p-4 md:p-6 mb-10 flex flex-col md:flex-row items-center justify-between text-white shadow-sm">
                     <p className="font-medium text-lg mb-4 md:mb-0">Check out the latest feedback from your teacher!</p>
-                    <Link href="/feedback">
+                    <Link href="/student/feedback">
                         <Button variant="secondary" className="bg-white text-[#5865F2] hover:bg-gray-100 font-semibold border-none">
                             Check feedback <ChevronRight className="ml-1 h-4 w-4" />
                         </Button>
