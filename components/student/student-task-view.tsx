@@ -9,6 +9,7 @@ import { DragDropTaskPlayer } from "@/components/student/tasks/drag-drop-task";
 import { ConversationTaskPlayer } from "@/components/student/tasks/conversation-task";
 import { MatchingTaskPlayer } from "@/components/student/tasks/matching-task";
 import { FillBlankTaskPlayer } from "@/components/student/tasks/fill-blank-task";
+import { saveTaskProgress } from "@/app/actions/student";
 import Confetti from 'react-confetti';
 import { useWindowSize } from 'react-use';
 
@@ -37,21 +38,17 @@ export function StudentTaskView({ task, unitTitle, courseId, initialScore, initi
     const handleTaskComplete = async (earnedScore: number) => {
         setIsSubmitting(true);
         try {
-            const response = await fetch("/api/student/progress", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    taskId: task.id,
-                    score: earnedScore
-                })
-            });
+            const result = await saveTaskProgress(task.id, earnedScore);
 
-            if (response.ok) {
+            if (result.success) {
                 setScore(earnedScore);
                 setIsCompleted(true);
                 setShowConfetti(true);
                 setTimeout(() => setShowConfetti(false), 5000); // Stop confetti after 5s
                 router.refresh(); // Refresh to update server-side data if needed
+                router.refresh(); // Double refresh just to be safe with server data propagation? No, one is usually enough but sometimes race conditions occur.
+            } else {
+                console.error("Failed to save progress:", result.error);
             }
         } catch (error) {
             console.error("Failed to save progress", error);

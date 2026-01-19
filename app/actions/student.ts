@@ -46,3 +46,54 @@ export async function markFeedbackAsRead(feedbackId: string) {
     revalidatePath('/student/feedback');
     return { success: true };
 }
+
+export async function saveTaskProgress(taskId: string, score: number) {
+    const session = await auth();
+    if (!session?.user?.id) return { success: false, error: "Unauthorized" };
+
+    try {
+        // Get existing result to compare scores
+        const existingResult = await prisma.taskResult.findUnique({
+            where: {
+                userId_taskId: {
+                    userId: session.user.id,
+                    taskId: taskId
+                }
+            }
+        });
+
+        // Upsert logic: keep the highest score
+        const newScore = existingResult ? Math.max(existingResult.score, score) : score;
+        const attempts = existingResult ? existingResult.attempts + 1 : 1;
+
+        await prisma.taskResult.upsert({
+            where: {
+                userId_taskId: {
+                    userId: session.user.id,
+                    taskId: taskId
+                }
+            },
+            update: {
+                score: newScore,
+                attempts: attempts,
+                completed: true
+            },
+            create: {
+                userId: session.user.id,
+                taskId: taskId,
+                score: newScore,
+                attempts: 1,
+                completed: true
+            }
+        });
+
+        // Revalidate the task page and the course page (we don't have courseId here easily, but we can try generic paths or rely on page refresh)
+        // Actually, router.refresh() in client handles the view update, but revalidatePath clears the cache for the specific task path if needed.
+        revalidatePath(`/student/courses/[courseId]`, 'layout');
+
+        return { success: true };
+    } catch (error) {
+        console.error("Failed to save progress", error);
+        return { success: false, error: "Internal Error" };
+    }
+}
