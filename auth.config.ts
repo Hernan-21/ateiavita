@@ -35,9 +35,12 @@ export const authConfig = {
             }
             return true
         },
-        async jwt({ token, user }) {
+        async jwt({ token, user, trigger }) {
             if (user) {
                 token.role = user.role
+            }
+            if (trigger === "signUp") {
+                token.isNewUser = true;
             }
             return token
         },
@@ -48,6 +51,7 @@ export const authConfig = {
             // Add custom fields to session if needed (e.g. role)
             if (session.user) {
                 session.user.role = token.role as string
+                session.user.isNewUser = token.isNewUser as boolean
             }
             return session
         },

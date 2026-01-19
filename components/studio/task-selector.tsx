@@ -1,7 +1,7 @@
 "use client";
 
 import { useStudio } from "./studio-context";
-import { Video, FileText, CheckSquare, Music, AlignLeft, GripVertical, MessageCircle } from "lucide-react";
+import { Video, FileText, CheckSquare, Music, AlignLeft, GripVertical, MessageCircle, Type } from "lucide-react";
 import { TaskType } from "@/types/content";
 
 const TOOLS: { type: TaskType; label: string; icon: React.ElementType; color: string }[] = [
@@ -13,6 +13,7 @@ const TOOLS: { type: TaskType; label: string; icon: React.ElementType; color: st
     { type: 'matching', label: 'Matching Game', icon: GripVertical, color: 'text-indigo-500' },
     { type: 'drag_drop', label: 'Drag & Drop', icon: GripVertical, color: 'text-pink-500' },
     { type: 'conversation', label: 'Conversation', icon: MessageCircle, color: 'text-teal-500' },
+    { type: 'text', label: 'Descriptive Text', icon: Type, color: 'text-gray-500' },
 ];
 
 export function TaskSelector() {

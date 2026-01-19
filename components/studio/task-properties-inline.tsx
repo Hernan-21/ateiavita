@@ -8,6 +8,7 @@ import { DragDropProperties } from "./panels/drag-drop-properties";
 import { ConversationProperties } from "./panels/conversation-properties";
 import { MatchingProperties } from "./panels/matching-properties";
 import { FillBlankProperties } from "./panels/fill-blank-properties";
+import { TextProperties } from "./panels/text-properties";
 
 export function TaskPropertiesInline({ task }: { task: Task }) {
     const { updateTask } = useStudio();
@@ -86,6 +87,8 @@ function renderSpecificPanel(task: Task, updateFn: any) {
             return <MatchingProperties task={task} updateTask={updateFn} />;
         case 'fill_blank':
             return <FillBlankProperties task={task} updateTask={updateFn} />;
+        case 'text':
+            return <TextProperties task={task} updateTask={updateFn} />;
         default:
             return <div className="text-sm text-gray-500 italic">No specific configuration available.</div>;
     }

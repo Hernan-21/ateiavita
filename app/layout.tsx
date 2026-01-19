@@ -3,6 +3,7 @@ import { Open_Sans } from "next/font/google";
 import "./globals.css";
 import { UserProvider } from "@/lib/context";
 import { auth } from "@/auth";
+import { WelcomeModal } from "@/components/WelcomeModal";
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -23,12 +24,13 @@ export default async function RootLayout({
   const userId = session?.user?.email ?? undefined; // Use email as stable ID if ID is not available
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${openSans.variable} antialiased`}
       >
         <UserProvider userId={userId}>
           {children}
+          <WelcomeModal isNewUser={!!session?.user?.isNewUser} />
         </UserProvider>
       </body>
     </html>

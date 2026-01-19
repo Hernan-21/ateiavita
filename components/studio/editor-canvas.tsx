@@ -1,7 +1,7 @@
 "use client";
 
 import { useStudio } from "./studio-context";
-import { Trash2, GripVertical, Video, FileText, CheckSquare, Music, MessageCircle } from "lucide-react";
+import { Trash2, GripVertical, Video, FileText, CheckSquare, Music, MessageCircle, Type } from "lucide-react";
 import { TaskPropertiesInline } from "./task-properties-inline";
 
 const ICONS = {
@@ -12,7 +12,8 @@ const ICONS = {
     matching: GripVertical,
     fill_blank: FileText,
     drag_drop: GripVertical,
-    conversation: MessageCircle
+    conversation: MessageCircle,
+    text: Type
 }
 
 export function EditorCanvas() {

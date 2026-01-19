@@ -22,7 +22,7 @@ export function ClassDashboard({ classId, className, students: initialStudents, 
 
     // Feedback Modal State
     const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
-    const [selectedStudent, setSelectedStudent] = useState<{ id: string, name: string } | null>(null);
+    const [selectedStudent, setSelectedStudent] = useState<{ id: string, name: string, existingFeedback?: { id: string, content: string } | null } | null>(null);
 
     const handleCourseChange = async (courseId: string) => {
         setSelectedCourseId(courseId);
@@ -59,7 +59,7 @@ export function ClassDashboard({ classId, className, students: initialStudents, 
         }
     };
 
-    const handleOpenFeedback = (student: { id: string, name: string }) => {
+    const handleOpenFeedback = (student: { id: string, name: string, existingFeedback?: any }) => {
         setSelectedStudent(student);
         setFeedbackModalOpen(true);
     };
@@ -223,7 +223,11 @@ export function ClassDashboard({ classId, className, students: initialStudents, 
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                 <button
-                                                    onClick={() => handleOpenFeedback({ id: score.studentId, name: score.studentName })}
+                                                    onClick={() => handleOpenFeedback({
+                                                        id: score.studentId,
+                                                        name: score.studentName,
+                                                        existingFeedback: score.lastFeedback
+                                                    })}
                                                     className="text-indigo-600 hover:text-indigo-900 flex items-center justify-end gap-1 ml-auto"
                                                 >
                                                     <MessageSquare className="h-4 w-4" />
@@ -304,6 +308,7 @@ export function ClassDashboard({ classId, className, students: initialStudents, 
                 studentName={selectedStudent?.name || ""}
                 courseId={selectedCourseId}
                 classId={classId}
+                existingFeedback={selectedStudent?.existingFeedback}
             />
         </div>
     );

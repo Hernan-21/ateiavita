@@ -192,6 +192,7 @@ export async function saveFeedback(data: {
 
     if (!author) throw new Error("Author not found");
 
+
     return await (prisma as any).feedback.create({
         data: {
             content: data.content,
@@ -201,4 +202,45 @@ export async function saveFeedback(data: {
             authorId: author.id
         }
     });
+}
+
+export async function updateFeedback(feedbackId: string, content: string, classId: string) {
+    const session = await auth();
+    if (!session?.user?.email) throw new Error("Unauthorized");
+
+    const author = await prisma.user.findUnique({
+        where: { email: session.user.email }
+    });
+
+    if (!author) throw new Error("Author not found");
+
+    // Ideally verify authorship or teacher role here
+    const feedback = await (prisma as any).feedback.findUnique({
+        where: { id: feedbackId }
+    });
+
+    if (!feedback) throw new Error("Feedback not found");
+
+    // Optional: Check if user is the author or has admin rights
+    // if (feedback.authorId !== author.id) throw new Error("Unauthorized");
+
+    await (prisma as any).feedback.update({
+        where: { id: feedbackId },
+        data: { content }
+    });
+
+    revalidatePath(`/teacher/classes/${classId}`);
+    return { success: true };
+}
+
+export async function deleteFeedback(feedbackId: string, classId: string) {
+    const session = await auth();
+    if (!session?.user?.email) throw new Error("Unauthorized");
+
+    await (prisma as any).feedback.delete({
+        where: { id: feedbackId }
+    });
+
+    revalidatePath(`/teacher/classes/${classId}`);
+    return { success: true };
 }

@@ -1,4 +1,4 @@
-export type TaskType = 'video' | 'quiz' | 'pdf' | 'audio' | 'matching' | 'fill_blank' | 'drag_drop' | 'conversation';
+export type TaskType = 'video' | 'quiz' | 'pdf' | 'audio' | 'matching' | 'fill_blank' | 'drag_drop' | 'conversation' | 'text';
 
 export interface BaseTask {
     id: string;
@@ -125,12 +125,22 @@ export interface FillBlankPayload {
     correctAnswer: string;
 }
 
+
 export interface FillBlankTask extends BaseTask {
     type: 'fill_blank';
     payload: FillBlankPayload;
 }
 
-export type Task = VideoTask | QuizTask | PDFTask | AudioTask | DragDropTask | ConversationTask | MatchingTask | FillBlankTask;
+export interface TextPayload {
+    content: string; // HTML or Markdown content
+}
+
+export interface TextTask extends BaseTask {
+    type: 'text';
+    payload: TextPayload;
+}
+
+export type Task = VideoTask | QuizTask | PDFTask | AudioTask | DragDropTask | ConversationTask | MatchingTask | FillBlankTask | TextTask;
 
 // --- LESSON STRUCTURE ---
 
