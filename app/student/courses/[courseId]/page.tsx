@@ -56,47 +56,63 @@ export default async function StudentCoursePage({ params }: { params: Promise<{ 
         });
     });
 
-    const averageScore = completedTasks > 0 ? Math.round(totalScore / completedTasks) : 0;
+    const averageScore = totalTasks > 0 ? Math.round(totalScore / totalTasks) : 0;
+
+    // Find the class this student is enrolled in that contains this course
+    const enrollment = await prisma.enrollment.findFirst({
+        where: {
+            userId: session.user.id,
+            class: {
+                courses: {
+                    some: {
+                        courseId: courseId
+                    }
+                }
+            }
+        },
+        include: {
+            class: true
+        }
+    });
+
+    const backLink = enrollment ? `/student/class/${enrollment.classId}` : '/';
+    const backLabel = enrollment ? `Back to ${enrollment.class.name}` : 'Back to Dashboard';
 
     return (
         <div className="min-h-screen bg-gray-50/50">
             <Navbar />
 
-            {/* Full Width Header */}
-            <div className={`w-full bg-${course.color || 'indigo'}-50 border-b border-${course.color || 'indigo'}-100`}>
-                <div className="container mx-auto px-4 md:px-8 py-8 max-w-4xl">
-                    <Link href="/" className="inline-flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 mb-8 transition-colors">
+            <main className="container mx-auto px-4 md:px-8 py-8 max-w-4xl animate-in fade-in slide-in-from-bottom-4 duration-700">
+                {/* Header with Yellow Background (Reference Style) */}
+                {/* Header with Yellow Background (Reference Style) */}
+                <div className="relative px-4 sm:px-6 lg:px-8 py-8 bg-gradient-to-br from-amber-50 via-yellow-50/50 to-amber-50 rounded-3xl border border-amber-100/50 shadow-sm mb-8">
+                    <Link href={backLink} className="inline-flex items-center text-sm font-medium text-amber-700 hover:text-amber-900 mb-6 transition-colors">
                         <ChevronLeft className="w-4 h-4 mr-1" />
-                        Back to Practice Material Level 1
+                        {backLabel}
                     </Link>
 
-                    <div className="flex justify-between items-end pb-6">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                         <div className="flex items-center gap-6">
-                            <div className={cn(
-                                "w-20 h-20 rounded-full flex items-center justify-center text-4xl font-bold shadow-sm shrink-0",
-                                `bg-${course.color || 'indigo'}-100 text-${course.color || 'indigo'}-600`
-                            )}
-                                style={{ backgroundColor: '#EEF2FF', color: '#4F46E5' }} // Fallback if dynamic classes don't load
-                            >
+                            <div className="h-24 w-24 rounded-3xl bg-white shadow-xl flex items-center justify-center text-4xl border border-amber-200">
                                 {course.iconChar}
                             </div>
-
                             <div>
-                                <h1 className="text-3xl font-bold text-gray-900 mb-1">{course.title}</h1>
-                                <p className="text-gray-500 font-medium">{course.description || "Functional English"}</p>
+                                <h1 className="text-4xl font-bold text-slate-900 font-serif mb-2">
+                                    {course.title}
+                                </h1>
+                                <p className="text-lg text-slate-600">
+                                    {course.description || "General Level • Beginner"}
+                                </p>
                             </div>
                         </div>
 
-                        {/* Score Badge */}
-                        <div className="bg-indigo-100 rounded-xl px-6 py-3 text-indigo-900 flex flex-col items-center min-w-[140px]">
-                            <span className="text-xs font-semibold uppercase tracking-wide text-indigo-600 mb-0.5">Final Score</span>
-                            <span className="text-3xl font-bold">{averageScore}%</span>
+                        {/* Score Badge (Styled to match reference aesthetics if possible, or kept as polished badge) */}
+                        <div className="bg-white/80 backdrop-blur-md rounded-xl border border-white shadow-md px-6 py-3 flex flex-col items-center min-w-[140px]">
+                            <span className="text-xs font-bold text-amber-600 uppercase tracking-wide mb-0.5">Final Score</span>
+                            <span className="text-3xl font-bold text-slate-900 font-serif">{averageScore}%</span>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <main className="container mx-auto px-4 md:px-8 py-8 max-w-4xl">
                 {/* Units List */}
                 <div className="space-y-8">
                     {course.units.length === 0 ? (

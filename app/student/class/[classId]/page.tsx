@@ -36,12 +36,14 @@ export default async function StudentClassPage({ params }: { params: Promise<{ c
     return (
         <div className="min-h-screen bg-white">
             <Navbar />
-            <ClassDetailView
-                classId={schoolClass.id}
-                className={schoolClass.name}
-                classDescription={schoolClass.description}
-                courses={schoolClass.courses}
-            />
+            <main className="container mx-auto px-4 md:px-8 py-8 max-w-4xl">
+                <ClassDetailView
+                    classId={schoolClass.id}
+                    className={schoolClass.name}
+                    classDescription={schoolClass.description}
+                    courses={schoolClass.courses}
+                />
+            </main>
         </div>
     );
 }

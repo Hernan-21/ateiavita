@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
-import { Open_Sans } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { UserProvider } from "@/lib/context";
 import { auth } from "@/auth";
 import { WelcomeModal } from "@/components/WelcomeModal";
 
-const openSans = Open_Sans({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-open-sans",
+  variable: "--font-inter",
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
 });
 
 export const metadata: Metadata = {
@@ -26,7 +31,7 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${openSans.variable} antialiased`}
+        className={`${inter.variable} ${playfair.variable} antialiased`}
       >
         <UserProvider userId={userId}>
           {children}

@@ -11,20 +11,20 @@ export async function Navbar() {
     const user = session?.user
 
     return (
-        <nav className="sticky top-0 z-50 w-full bg-white border-b border-gray-100">
-            <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-8">
-                <div className="flex items-center gap-8">
-                    <Link href="/" className="flex items-center gap-2 group">
-                        <div className="relative flex items-center justify-center w-8 h-8">
-                            <span className="text-2xl">💡</span>
+        <nav className="sticky top-0 z-50 w-full border-b border-white/50 bg-white/80 backdrop-blur-xl">
+            <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+                <div className="flex items-center gap-12">
+                    <Link href="/" className="flex items-center gap-3 group">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-amber-500 transition-transform group-hover:scale-110">
+                            <span className="text-xl">💡</span>
                         </div>
-                        <span className="text-2xl font-bold text-foreground tracking-tight group-hover:text-primary transition-colors">
+                        <span className="font-serif text-2xl font-bold tracking-tight text-slate-900">
                             ANNA
                         </span>
                     </Link>
 
-                    <div className="hidden md:flex items-center gap-6">
-                        <Link href="/student/courses" className="flex items-center gap-2 text-sm font-semibold text-gray-700 hover:text-primary transition-colors">
+                    <div className="hidden md:flex items-center gap-8">
+                        <Link href="/student/courses" className="flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">
                             <MonitorPlay className="h-4 w-4" />
                             Courses
                         </Link>
@@ -32,14 +32,14 @@ export async function Navbar() {
                     </div>
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-6">
                     {user ? (
-                        <div className="hidden md:flex items-center gap-2 p-2 transition-colors">
+                        <div className="flex items-center gap-3 pl-6 border-l border-slate-200">
                             <UserMenu user={user} />
                         </div>
                     ) : (
                         <Link href="/login">
-                            <Button variant="default" size="sm">
+                            <Button variant="default" size="sm" className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm">
                                 Iniciar Sesión
                             </Button>
                         </Link>

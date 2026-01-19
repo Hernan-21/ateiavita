@@ -62,8 +62,8 @@ export function ConversationTaskPlayer({ payload, onComplete }: Props) {
                             </div>
 
                             <div className={`max-w-[80%] p-3 rounded-2xl shadow-sm text-sm ${isRight
-                                    ? 'bg-indigo-50 border border-indigo-100 rounded-br-none text-indigo-900'
-                                    : 'bg-white border border-gray-200 rounded-bl-none text-gray-800'
+                                ? 'bg-indigo-50 border border-indigo-100 rounded-br-none text-indigo-900'
+                                : 'bg-white border border-gray-200 rounded-bl-none text-gray-800'
                                 }`}>
                                 <p className="font-bold text-xs mb-1 opacity-50">{line.speaker}</p>
                                 <p>{line.text}</p>
@@ -76,10 +76,9 @@ export function ConversationTaskPlayer({ payload, onComplete }: Props) {
             <div className="sticky bottom-4 flex justify-center pt-4">
                 <button
                     onClick={advanceDialogue}
-                    disabled={visibleLines === payload.lines.length}
-                    className="bg-black text-white px-6 py-3 rounded-full font-bold shadow-lg hover:bg-gray-800 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                    className="bg-black text-white px-6 py-3 rounded-full font-bold shadow-lg hover:bg-gray-800 active:scale-95 transition-all flex items-center gap-2"
                 >
-                    {visibleLines < payload.lines.length ? "Next Message" : "Conversation Complete"}
+                    {visibleLines < payload.lines.length ? "Next Message" : "Complete Lesson"}
                 </button>
             </div>
         </div>

@@ -69,94 +69,92 @@ export function ClassDetailView({ classId, className, classDescription, courses 
 
     return (
         <div className="animate-in fade-in duration-300">
-            {/* Full Width Header */}
-            <div className={`w-full ${style.bg} border-b border-${style.theme}-200`}>
-                <div className="max-w-5xl mx-auto px-4 md:px-8 py-8">
-                    <Link href="/" className="inline-flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 mb-6 transition-colors">
-                        <ChevronLeft className="w-4 h-4 mr-1" />
-                        Back to Dashboard
-                    </Link>
+            {/* Header with Yellow Background (Reference Style) */}
+            <div className="relative px-4 sm:px-6 lg:px-8 py-8 bg-gradient-to-br from-amber-50 via-yellow-50/50 to-amber-50 rounded-3xl border border-amber-100/50 shadow-sm mb-8">
 
-                    <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-                        <div className="flex items-center gap-6">
-                            <div className={`w-20 h-20 rounded-full bg-white flex items-center justify-center text-4xl shadow-sm shrink-0`}>
-                                {style.icon}
-                            </div>
 
-                            <div>
-                                <h1 className="text-3xl font-bold text-gray-900 mb-2">{className}</h1>
-                                <p className="text-gray-700 font-medium opacity-90">{classDescription || "General Level"}</p>
-                            </div>
+                <Link href="/" className="inline-flex items-center text-sm font-medium text-amber-900 hover:text-amber-800 mb-6 transition-colors">
+                    <ChevronLeft className="w-4 h-4 mr-1" />
+                    Back to Dashboard
+                </Link>
+
+                <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 relative z-10">
+                    <div className="flex items-center gap-6">
+                        <div className={`w-24 h-24 rounded-3xl bg-white flex items-center justify-center text-4xl shadow-xl shrink-0 border border-amber-200`}>
+                            {style.icon}
                         </div>
 
-                        {/* Tabs moved inside header for integrated look, similar to course view but functional */}
-                        <div className="flex items-center gap-1 bg-white/50 p-1 rounded-xl">
-                            {['Current', 'Past', 'Media', 'My Picks'].map((tab) => (
-                                <button
-                                    key={tab}
-                                    onClick={() => setActiveTab(tab.toLowerCase())}
-                                    className={`px-4 py-2 text-sm font-semibold rounded-lg transition-all ${activeTab === tab.toLowerCase()
-                                            ? 'bg-white text-gray-900 shadow-sm'
-                                            : 'text-gray-600 hover:bg-white/30'
-                                        }`}
-                                >
-                                    {tab}
-                                </button>
-                            ))}
+                        <div>
+                            <h1 className="text-4xl font-bold text-slate-900 font-serif mb-2">{className}</h1>
+                            <p className="text-slate-600 font-medium text-lg">{classDescription || "General Level"}</p>
                         </div>
+                    </div>
+
+                    {/* Tabs */}
+                    <div className="flex items-center gap-1 bg-white/80 backdrop-blur-md p-1 rounded-xl border border-white shadow-sm">
+                        {['Current', 'Past', 'Media', 'My Picks'].map((tab) => (
+                            <button
+                                key={tab}
+                                onClick={() => setActiveTab(tab.toLowerCase())}
+                                className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${activeTab === tab.toLowerCase()
+                                    ? 'bg-white text-indigo-600 shadow-md font-bold'
+                                    : 'text-slate-500 hover:text-slate-900 hover:bg-white/50'
+                                    }`}
+                            >
+                                {tab}
+                            </button>
+                        ))}
                     </div>
                 </div>
             </div>
 
             {/* Content List */}
-            <div className="max-w-5xl mx-auto px-4 md:px-8 py-8">
-                <div className="bg-white rounded-3xl shadow-sm border border-gray-100 divide-y divide-gray-100 overflow-hidden">
-                    {filteredCourses.length === 0 ? (
-                        <div className="p-12 text-center text-gray-500">
-                            {activeTab === 'media' || activeTab === 'my picks'
-                                ? "This section is coming soon."
-                                : "No lessons available in this status."}
-                        </div>
-                    ) : (
-                        filteredCourses.map(({ course, status }) => (
-                            <div
-                                key={course.id}
-                                onClick={() => router.push(`/student/courses/${course.id}`)}
-                                className="p-6 flex items-center justify-between hover:bg-gray-50 transition-colors cursor-pointer group"
-                            >
-                                <div className="flex items-center gap-5">
-                                    {/* Lesson Icon Avatar */}
-                                    <div className={`w-12 h-12 rounded-full ${style.bg} flex items-center justify-center text-xl text-gray-700 shrink-0`}>
-                                        <span className={style.text}>{course.iconChar || '📖'}</span>
-                                    </div>
-
-                                    <div>
-                                        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">
-                                            Lesson
-                                        </p>
-                                        <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#5865F2] transition-colors">
-                                            {course.title}
-                                        </h3>
-                                    </div>
+            <div className="bg-white rounded-3xl shadow-sm border border-gray-100 divide-y divide-gray-100 overflow-hidden">
+                {filteredCourses.length === 0 ? (
+                    <div className="p-12 text-center text-gray-500">
+                        {activeTab === 'media' || activeTab === 'my picks'
+                            ? "This section is coming soon."
+                            : "No lessons available in this status."}
+                    </div>
+                ) : (
+                    filteredCourses.map(({ course, status }) => (
+                        <div
+                            key={course.id}
+                            onClick={() => router.push(`/student/courses/${course.id}`)}
+                            className="p-6 flex items-center justify-between hover:bg-gray-50 transition-colors cursor-pointer group"
+                        >
+                            <div className="flex items-center gap-5">
+                                {/* Lesson Icon Avatar */}
+                                <div className={`w-12 h-12 rounded-full ${style.bg} flex items-center justify-center text-xl text-gray-700 shrink-0`}>
+                                    <span className={style.text}>{course.iconChar || '📖'}</span>
                                 </div>
 
-                                {/* Status Indicator */}
-                                <div className="flex items-center">
-                                    {status === 'taught' || status === 'completed' ? (
-                                        <div className="flex items-center gap-2 text-green-600 font-bold text-sm bg-green-50 px-3 py-1.5 rounded-full">
-                                            <CheckCircle className="w-4 h-4 fill-current" />
-                                            Complete
-                                        </div>
-                                    ) : (
-                                        <div className="text-gray-400 group-hover:text-[#5865F2] transition-transform group-hover:translate-x-1">
-                                            <PlayCircle className="w-6 h-6" />
-                                        </div>
-                                    )}
+                                <div>
+                                    <p className="text-xs font-bold text-indigo-600 uppercase tracking-wide mb-1">
+                                        Lesson
+                                    </p>
+                                    <h3 className="text-xl font-bold text-slate-900 font-serif group-hover:text-indigo-600 transition-colors">
+                                        {course.title}
+                                    </h3>
                                 </div>
                             </div>
-                        ))
-                    )}
-                </div>
+
+                            {/* Status Indicator */}
+                            <div className="flex items-center">
+                                {status === 'taught' || status === 'completed' ? (
+                                    <div className="flex items-center gap-2 text-green-600 font-bold text-sm bg-green-50 px-3 py-1.5 rounded-full">
+                                        <CheckCircle className="w-4 h-4 fill-current" />
+                                        Complete
+                                    </div>
+                                ) : (
+                                    <div className="text-gray-400 group-hover:text-[#5865F2] transition-transform group-hover:translate-x-1">
+                                        <PlayCircle className="w-6 h-6" />
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    ))
+                )}
             </div>
         </div>
     );
