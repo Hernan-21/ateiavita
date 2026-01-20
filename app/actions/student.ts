@@ -48,10 +48,16 @@ export async function markFeedbackAsRead(feedbackId: string) {
 }
 
 export async function saveTaskProgress(taskId: string, score: number) {
-    const session = await auth();
-    if (!session?.user?.id) return { success: false, error: "Unauthorized" };
-
     try {
+        const session = await auth();
+
+        // Log session status for debugging (crucial for PROD issues)
+        if (!session?.user?.id) {
+            console.error("[saveTaskProgress] Unauthorized: No session or user ID found.");
+            // In production, NextAuth sometimes needs strict cookie configuration or trust host.
+            return { success: false, error: "Unauthorized: Session is invalid or expired." };
+        }
+
         // Get existing result to compare scores
         const existingResult = await prisma.taskResult.findUnique({
             where: {
@@ -87,13 +93,12 @@ export async function saveTaskProgress(taskId: string, score: number) {
             }
         });
 
-        // Revalidate the task page and the course page (we don't have courseId here easily, but we can try generic paths or rely on page refresh)
-        // Actually, router.refresh() in client handles the view update, but revalidatePath clears the cache for the specific task path if needed.
+        // Revalidate the task page and the course page
         revalidatePath(`/student/courses/[courseId]`, 'layout');
 
         return { success: true };
-    } catch (error) {
-        console.error("Failed to save progress", error);
-        return { success: false, error: "Internal Error" };
+    } catch (error: any) {
+        console.error("[saveTaskProgress] Critical Error:", error);
+        return { success: false, error: error.message || "Internal Server Error" };
     }
 }

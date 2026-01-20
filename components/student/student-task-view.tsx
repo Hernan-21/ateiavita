@@ -49,6 +49,7 @@ export function StudentTaskView({ task, unitTitle, courseId, initialScore, initi
                 router.refresh(); // Double refresh just to be safe with server data propagation? No, one is usually enough but sometimes race conditions occur.
             } else {
                 console.error("Failed to save progress:", result.error);
+                alert(`Error saving progress: ${result.error}`); // Feedback for the user/debugging
             }
         } catch (error) {
             console.error("Failed to save progress", error);
